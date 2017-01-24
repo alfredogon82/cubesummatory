@@ -65,21 +65,62 @@ class cubeSummationController extends Controller{
      	$t = $request['numero'];
   		$info = explode(PHP_EOL, $cubeInput);
 
+
+
   		$nxm = $info[0];
   		$nxmExploded = $this->explodedSpace($nxm);
 		$n = $nxmExploded[0];
 		$m = $nxmExploded[1];
 		$w = 0;
+		$q = 1;
+
+		if($n<1){
+			return response()->json("Error - El valor de n debe ser mayor a 1");
+		}
+
+		if($n>100){
+			return response()->json("Error - El valor de n debe ser menor a 100");
+		}
+
+		if($m<1){
+			return response()->json("Error - El valor de m debe ser mayor a 1");
+		}
+
+		if($n>1000){
+			return response()->json("Error - El valor de m debe ser menor a 1000");
+		}
+
+		
+
+		
 
   		for ($j=1; $j <= $t; $j++) { 
 
   			if($w>1){
-  				$nxm = $info[$m+1];
+  				
+  				$nxm = $info[$m+$q];
   				
 				$nxmExploded = $this->explodedSpace($nxm);
 				$n = $nxmExploded[0];
 				$m = $nxmExploded[1];
+
+				if($n<1){
+					return response()->json("Error - El valor de n debe ser mayor a 1");
+				}
+
+				if($n>100){
+					return response()->json("Error - El valor de n debe ser menor a 100");
+				}
+
+				if($m<1){
+					return response()->json("Error - El valor de m debe ser mayor a 1");
+				}
+
+				if($n>1000){
+					return response()->json("Error - El valor de m debe ser menor a 1000");
+				}
 				
+				$q++;
   			}
 
   			$matriz = $this->creaMatriz($n);
@@ -90,9 +131,35 @@ class cubeSummationController extends Controller{
 	  			$instrAction = strtolower($valor[0]);
 	  			switch ($instrAction) {
 	  				case 'update':
+						if($valor[1]<1){
+							return response()->json("Error - El valor de x debe ser mayor o igual a 1");
+						}
+
+						if($valor[1]>$n){
+							return response()->json("Error - El valor de x debe ser menor o igual a n");
+						}
+
+						if($valor[2]<1){
+							return response()->json("Error - El valor de y debe ser mayor o igual a 1");
+						}
+
+						if($valor[2]>$n){
+							return response()->json("Error - El valor de y debe ser menor o igual a n");
+						}
+
+						if($valor[3]<1){
+							return response()->json("Error - El valor de z debe ser mayor o igual a 1");
+						}
+
+						if($valor[3]>$n){
+							return response()->json("Error - El valor de z debe ser menor o igual a n");
+						}
+
+
 	  					$matriz = $this->actualizaMatriz($valor[1], $valor[2], $valor[3], $valor[4], $matriz);
 	  				break;
 	  				case 'query':
+	  					
 	  					$ans = $this->sumaBloques($valor[1], $valor[2], $valor[3], $valor[4], $valor[5], $valor[6], $matriz);
 	  					array_push($rslt, $ans);
 	  				break;
